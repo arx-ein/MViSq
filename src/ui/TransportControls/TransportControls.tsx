@@ -5,7 +5,7 @@ import "./TransportControls.css";
 
 interface TransportControlsProps {
   enabled: boolean;
-  scheduler: MidiScheduler;
+  scheduler: MidiScheduler | null;
 }
 
 function formatTime(seconds: number): string {
@@ -22,19 +22,19 @@ export default function TransportControls({ enabled, scheduler }: TransportContr
 
   const onPlayPause = useCallback(() => {
     if (state === "playing") {
-      scheduler.pause();
+      scheduler?.pause();
     } else {
-      scheduler.play();
+      scheduler?.play();
     }
   }, [state, scheduler]);
 
   const onStop = useCallback(() => {
-    scheduler.stop();
+    scheduler?.stop();
   }, [scheduler]);
 
   const onSeek = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      scheduler.seek(Number(e.target.value));
+      scheduler?.seek(Number(e.target.value));
     },
     [scheduler]
   );

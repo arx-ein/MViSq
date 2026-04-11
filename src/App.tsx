@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FileImport from "./ui/FileImport/FileImport";
 import Grid from "./ui/Grid/Grid";
 import TransportControls from "./ui/TransportControls/TransportControls";
@@ -14,16 +14,23 @@ interface MidiInfo {
 }
 
 function App() {
-  const scheduler = useMemo(() => new MidiScheduler(), []);
+  // Created in useEffect so React StrictMode's mount→cleanup→mount cycle
+  // produces a fresh scheduler on remount rather than reusing a disposed one.
+  const [scheduler, setScheduler] = useState<MidiScheduler | null>(null);
   const [midiInfo, setMidiInfo] = useState<MidiInfo | null>(null);
 
   useEffect(() => {
-    return () => scheduler.dispose();
-  }, [scheduler]);
+    const s = new MidiScheduler();
+    setScheduler(s);
+    return () => {
+      s.dispose();
+      setScheduler(null);
+    };
+  }, []);
 
   const onMidiLoaded = useCallback(
     (parsed: ParsedMidi, name: string) => {
-      scheduler.load(parsed);
+      scheduler?.load(parsed);
       setMidiInfo({
         name,
         notes: parsed.notes.length,
@@ -36,7 +43,7 @@ function App() {
 
   const onCellClick = useCallback(
     (midi: number) => {
-      scheduler.playNote(midi);
+      scheduler?.playNote(midi);
     },
     [scheduler]
   );
@@ -51,9 +58,11 @@ function App() {
             {midiInfo.name} &mdash; {midiInfo.notes} notes,{" "}
             {midiInfo.duration.toFixed(1)}s, {midiInfo.bpm.toFixed(0)} BPM
           </>
-        ) : "MIDI file not loaded" }
+        ) : (
+          "MIDI file not loaded"
+        )}
       </p>
-      <TransportControls enabled={midiInfo !== null} scheduler={scheduler} />
+      <TransportControls enabled={midiInfo !== null && scheduler !== null} scheduler={scheduler} />
       <Grid onCellClick={onCellClick} />
       <GridConfigPanel />
     </div>
