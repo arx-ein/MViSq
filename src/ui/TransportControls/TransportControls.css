@@ -14,18 +14,27 @@
 
 .transport__btn {
   padding: 0.5rem 1.5rem;
-  background: var(--accent);
-  color: var(--text);
   border: none;
   border-radius: 6px;
-  cursor: pointer;
   font-size: 0.9rem;
   font-family: inherit;
   transition: background 0.15s;
-}
 
-.transport__btn:hover {
-  background: #1a4a80;
+  &:disabled {
+    background: hsl(from var(--accent) h calc(s/2) l);
+    color: hsl(from var(--text) h s calc(l/2));
+    cursor: default;
+  }
+
+  &:not(:disabled) {
+    background: var(--accent);
+    color: var(--text);
+    cursor: pointer;
+
+    &:hover {
+      background: #1a4a80;
+    }
+  }
 }
 
 .transport__seek {

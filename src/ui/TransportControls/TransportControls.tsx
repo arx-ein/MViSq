@@ -4,6 +4,7 @@ import type { MidiScheduler } from "../../transport/MidiScheduler";
 import "./TransportControls.css";
 
 interface TransportControlsProps {
+  enabled: boolean;
   scheduler: MidiScheduler;
 }
 
@@ -13,7 +14,7 @@ function formatTime(seconds: number): string {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-export default function TransportControls({ scheduler }: TransportControlsProps) {
+export default function TransportControls({ enabled, scheduler }: TransportControlsProps) {
   const state = useTransportStore((s) => s.state);
   const position = useTransportStore((s) => s.position);
   const duration = useTransportStore((s) => s.duration);
@@ -41,10 +42,10 @@ export default function TransportControls({ scheduler }: TransportControlsProps)
   return (
     <div className="transport">
       <div className="transport__buttons">
-        <button className="transport__btn" onClick={onPlayPause}>
+        <button className="transport__btn" onClick={onPlayPause} disabled={!enabled}>
           {state === "playing" ? "Pause" : "Play"}
         </button>
-        <button className="transport__btn" onClick={onStop}>
+        <button className="transport__btn" onClick={onStop} disabled={!enabled}>
           Stop
         </button>
       </div>
@@ -58,6 +59,7 @@ export default function TransportControls({ scheduler }: TransportControlsProps)
           step={0.1}
           value={position}
           onChange={onSeek}
+          disabled={!enabled}
         />
         <span className="transport__time">{formatTime(duration)}</span>
       </div>

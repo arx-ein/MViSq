@@ -45,17 +45,17 @@ function App() {
     <div className="app">
       <h1>MViSq</h1>
       <FileImport onMidiLoaded={onMidiLoaded} />
-      {midiInfo && (
-        <>
-          <p className="midi-info">
+      <p className="midi-info">
+        {midiInfo ? (
+          <>
             {midiInfo.name} &mdash; {midiInfo.notes} notes,{" "}
             {midiInfo.duration.toFixed(1)}s, {midiInfo.bpm.toFixed(0)} BPM
-          </p>
-          <TransportControls scheduler={scheduler} />
-          <Grid onCellClick={onCellClick} />
-          <GridConfigPanel />
-        </>
-      )}
+          </>
+        ) : "MIDI file not loaded" }
+      </p>
+      <TransportControls enabled={midiInfo !== null} scheduler={scheduler} />
+      <Grid onCellClick={onCellClick} />
+      <GridConfigPanel />
     </div>
   );
 }
