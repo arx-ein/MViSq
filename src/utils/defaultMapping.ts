@@ -10,6 +10,11 @@ export function generateDefaultMapping(
   gridSize: number,
   startNote: number = 36
 ): number[] {
-  const total = gridSize * gridSize;
-  return Array.from({ length: total }, (_, i) => startNote + i);
+  return Array.from(
+    { length: gridSize },
+    (_, i) => Array.from(
+      { length: gridSize },
+      (_, j) => startNote + i * 5 + j * 2
+    )
+  ).flat();
 }
