@@ -1,0 +1,34 @@
+.grid-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.06s ease-out, box-shadow 0.06s ease-out;
+  color: var(--text);
+  font-family: inherit;
+  padding: 0;
+}
+
+.grid-cell:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.grid-cell--active {
+  border-color: rgba(0, 230, 118, 0.4);
+}
+
+.grid-cell__label {
+  font-size: 0.65rem;
+  opacity: 0.6;
+  pointer-events: none;
+  user-select: none;
+}
+
+.grid-cell--active .grid-cell__label {
+  opacity: 1;
+  color: #fff;
+}
