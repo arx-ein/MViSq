@@ -64,7 +64,12 @@ function App() {
       </p>
       <TransportControls enabled={midiInfo !== null && scheduler !== null} scheduler={scheduler} />
       <Grid onCellClick={onCellClick} />
+      <hr />
       <GridConfigPanel />
+      <footer>
+        <a href="https://github.com/arx-ein/MViSq">arx-ein/MViSq</a>
+        : MIDI Visualizer in Squares
+      </footer>
     </div>
   );
 }

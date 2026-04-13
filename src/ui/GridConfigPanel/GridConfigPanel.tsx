@@ -4,23 +4,17 @@ import { midiToName } from "../../utils/noteNames";
 import "./GridConfigPanel.css";
 
 export default function GridConfigPanel() {
-  const [open, setOpen] = useState(false);
+  const [startNote, setStartNote] = useState(36);
+  const [transposeOffset, setTransposeOffset] = useState(12);
   const gridRows = useGridConfigStore((s) => s.gridRows);
   const gridColumns = useGridConfigStore((s) => s.gridColumns);
   const setGridRows = useGridConfigStore((s) => s.setGridRows);
   const setGridColumns = useGridConfigStore((s) => s.setGridColumns);
   const noteMapping = useGridConfigStore((s) => s.noteMapping);
+  const setNoteMapping = useGridConfigStore((s) => s.setNoteMapping);
   const setNoteAt = useGridConfigStore((s) => s.setNoteAt);
   const resetMapping = useGridConfigStore((s) => s.resetMapping);
   const resetSize = useGridConfigStore((s) => s.resetSize);
-
-  if (!open) {
-    return (
-      <button className="config-toggle" onClick={() => setOpen(true)}>
-        Configure Grid
-      </button>
-    );
-  }
 
   // Display rows top-to-bottom (reversed from mapping order)
   const rows: { rowIndex: number; cells: { index: number; midi: number }[] }[] = [];
@@ -41,7 +35,6 @@ export default function GridConfigPanel() {
         <h2>Grid Note Mapping</h2>
         <div className="config-panel__actions">
           <button onClick={() => { resetMapping(); resetSize(); }}>Reset all</button>
-          <button onClick={() => setOpen(false)}>Close</button>
         </div>
       </div>
       <div className="config-panel__size">
@@ -96,6 +89,19 @@ export default function GridConfigPanel() {
             />
           ))
         )}
+      </div>
+      <h3>Controls</h3>
+      <div className="config-panel__control">
+        <p>
+          <button onClick={() => resetMapping(startNote)}>Generate default (WHiSq) mapping</button>
+          &nbsp;with lowest note number:&nbsp;
+          <input type="number" min={0} max={127} value={startNote} onChange={(e) => { setStartNote(Number(e.target.value)); }} />
+        </p>
+        <p>
+          <button onClick={() => setNoteMapping(noteMapping.map((m) => m + transposeOffset))}>Transpose</button>
+          &nbsp;by offset:&nbsp;
+          <input type="number" min={-127} max={127} value={transposeOffset} onChange={(e) => { setTransposeOffset(Number(e.target.value)); }} />
+        </p>
       </div>
     </div>
   );

@@ -21,6 +21,18 @@
     min-height: 100vh;
   }
 
+  hr {
+    width: 100%;
+  }
+
+  footer {
+    font-size: 0.8rem;
+    color: rgba(from var(--text) r g b / 0.5);
+    a {
+      color: var(--text);
+    }
+  }
+
   .app {
     max-width: 900px;
     margin: 0 auto;
@@ -61,6 +73,25 @@
       &:hover {
         background-color: hsl(from var(--accent) h s calc(l + 10));
       }
+    }
+  }
+
+  .app input[type="number"] {
+    padding: 0.3rem;
+    background-color: rgba(from var(--text) r g b / 0.05);
+    color: var(--text);
+    border: 1px solid rgba(from var(--text) r g b / 0.15);
+    border-radius: 2px;
+    font-family: inherit;
+
+    &:focus {
+      outline: 1px solid var(--active);
+      border-color: var(--active);
+    }
+
+    &::selection {
+      background-color: var(--text);
+      color: var(--bg);
     }
   }
 }
