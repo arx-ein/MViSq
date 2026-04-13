@@ -38,7 +38,7 @@ export default function GridConfigPanel() {
       maxWidth: `${gridColumns * 70}px`,
     }}>
       <div className="config-panel__header">
-        <span>Grid Note Mapping</span>
+        <h2>Grid Note Mapping</h2>
         <div className="config-panel__actions">
           <button onClick={() => { resetMapping(); resetSize(); }}>Reset all</button>
           <button onClick={() => setOpen(false)}>Close</button>

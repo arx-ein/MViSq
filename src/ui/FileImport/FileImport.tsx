@@ -56,9 +56,9 @@ export default function FileImport({ onMidiLoaded }: FileImportProps) {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
     >
-      <p>Drop a MIDI file here or</p>
+      Drop a MIDI file here or&nbsp;
       <label className="file-import__button">
-        Browse
+        &nbsp;browse&nbsp;
         <input
           type="file"
           accept=".mid,.midi"
