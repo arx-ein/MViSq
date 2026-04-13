@@ -4,8 +4,7 @@ A web-based MIDI visualizer that displays playback on a Launchpad-style grid. Lo
 
 ## Features & Roadmaps
 
-- **Grid visualization**: 8x8 grid of cells that light up when their assigned MIDI note is active
-  - ToDo: grid expansion is implemented but not accesible from UI yet
+- **Grid visualization**: adjustable rectangular grid of cells that light up when their assigned MIDI note is active
 - **Configurable mapping**: assign any MIDI note number (0–127) to any cell via the config panel
   - Uses [WHiSq: Wicki–Hayden in Squares](https://github.com/sozysozbot/WHiSq) or [Midimech](https://github.com/flipcoder/midimech) mapping as default
 - **Audio playback**: synthesized audio via Tone.js PolySynth, triggered in sync with the MIDI data
