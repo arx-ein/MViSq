@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useGridConfigStore } from "../../store/useGridConfigStore";
 import { midiToName } from "../../utils/noteNames";
 import "./GridConfigPanel.css";
@@ -6,15 +7,22 @@ import "./GridConfigPanel.css";
 export default function GridConfigPanel() {
   const [startNote, setStartNote] = useState(36);
   const [transposeOffset, setTransposeOffset] = useState(12);
-  const gridRows = useGridConfigStore((s) => s.gridRows);
-  const gridColumns = useGridConfigStore((s) => s.gridColumns);
-  const setGridRows = useGridConfigStore((s) => s.setGridRows);
-  const setGridColumns = useGridConfigStore((s) => s.setGridColumns);
-  const noteMapping = useGridConfigStore((s) => s.noteMapping);
-  const setNoteMapping = useGridConfigStore((s) => s.setNoteMapping);
-  const setNoteAt = useGridConfigStore((s) => s.setNoteAt);
-  const resetMapping = useGridConfigStore((s) => s.resetMapping);
-  const resetSize = useGridConfigStore((s) => s.resetSize);
+  const {
+    gridRows, gridColumns,
+    setGridRows, setGridColumns,
+    noteMapping, setNoteMapping, setNoteAt,
+    resetMapping, resetSize,
+  } = useGridConfigStore(useShallow((s) => ({
+    gridRows: s.gridRows,
+    gridColumns: s.gridColumns,
+    setGridRows: s.setGridRows,
+    setGridColumns: s.setGridColumns,
+    noteMapping: s.noteMapping,
+    setNoteMapping: s.setNoteMapping,
+    setNoteAt: s.setNoteAt,
+    resetMapping: s.resetMapping,
+    resetSize: s.resetSize,
+  })));
 
   // Display rows top-to-bottom (reversed from mapping order)
   const rows: { rowIndex: number; cells: { index: number; midi: number }[] }[] = [];
