@@ -2,21 +2,28 @@ import { create } from "zustand";
 import { generateDefaultMapping } from "../utils/defaultMapping";
 
 interface GridConfigState {
-  gridSize: number;
+  gridRows: number;
+  gridColumns: number;
   noteMapping: number[];
-  setGridSize: (size: number) => void;
+  setGridRows: (rows: number) => void;
+  setGridColumns: (columns: number) => void;
   setNoteAt: (index: number, midi: number) => void;
   setNoteMapping: (mapping: number[]) => void;
   resetMapping: () => void;
+  resetSize: () => void;
 }
 
-const DEFAULT_SIZE = 8;
+const DEFAULT_ROWS = 8;
+const DEFALUT_COLUMNS = 8;
 
 export const useGridConfigStore = create<GridConfigState>((set) => ({
-  gridSize: DEFAULT_SIZE,
-  noteMapping: generateDefaultMapping(DEFAULT_SIZE),
-  setGridSize: (size) =>
-    set({ gridSize: size, noteMapping: generateDefaultMapping(size) }),
+  gridRows: DEFAULT_ROWS,
+  gridColumns: DEFALUT_COLUMNS,
+  noteMapping: generateDefaultMapping(DEFAULT_ROWS, DEFALUT_COLUMNS),
+  setGridRows: (rows) =>
+    set({ gridRows: rows, noteMapping: generateDefaultMapping(rows, useGridConfigStore.getState().gridColumns) }),
+  setGridColumns: (columns) =>
+    set({ gridColumns: columns, noteMapping: generateDefaultMapping(useGridConfigStore.getState().gridRows, columns) }),
   setNoteAt: (index, midi) =>
     set((state) => {
       const mapping = [...state.noteMapping];
@@ -26,6 +33,8 @@ export const useGridConfigStore = create<GridConfigState>((set) => ({
   setNoteMapping: (mapping) => set({ noteMapping: mapping }),
   resetMapping: () =>
     set((state) => ({
-      noteMapping: generateDefaultMapping(state.gridSize),
+      noteMapping: generateDefaultMapping(state.gridRows, state.gridColumns),
     })),
+  resetSize: () =>
+    set(() => ({ gridRows: DEFAULT_ROWS, gridColumns: DEFALUT_COLUMNS }))
 }));

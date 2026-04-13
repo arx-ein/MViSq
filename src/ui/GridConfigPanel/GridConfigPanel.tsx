@@ -5,10 +5,14 @@ import "./GridConfigPanel.css";
 
 export default function GridConfigPanel() {
   const [open, setOpen] = useState(false);
-  const gridSize = useGridConfigStore((s) => s.gridSize);
+  const gridRows = useGridConfigStore((s) => s.gridRows);
+  const gridColumns = useGridConfigStore((s) => s.gridColumns);
+  const setGridRows = useGridConfigStore((s) => s.setGridRows);
+  const setGridColumns = useGridConfigStore((s) => s.setGridColumns);
   const noteMapping = useGridConfigStore((s) => s.noteMapping);
   const setNoteAt = useGridConfigStore((s) => s.setNoteAt);
   const resetMapping = useGridConfigStore((s) => s.resetMapping);
+  const resetSize = useGridConfigStore((s) => s.resetSize);
 
   if (!open) {
     return (
@@ -20,27 +24,60 @@ export default function GridConfigPanel() {
 
   // Display rows top-to-bottom (reversed from mapping order)
   const rows: { rowIndex: number; cells: { index: number; midi: number }[] }[] = [];
-  for (let row = gridSize - 1; row >= 0; row--) {
+  for (let row = gridRows - 1; row >= 0; row--) {
     const cells: { index: number; midi: number }[] = [];
-    for (let col = 0; col < gridSize; col++) {
-      const idx = row * gridSize + col;
+    for (let col = 0; col < gridColumns; col++) {
+      const idx = row * gridColumns + col;
       cells.push({ index: idx, midi: noteMapping[idx] });
     }
     rows.push({ rowIndex: row, cells });
   }
 
   return (
-    <div className="config-panel">
+    <div className="config-panel" style={{
+      maxWidth: `${gridColumns * 70}px`,
+    }}>
       <div className="config-panel__header">
         <span>Grid Note Mapping</span>
         <div className="config-panel__actions">
-          <button onClick={resetMapping}>Reset</button>
+          <button onClick={() => { resetMapping(); resetSize(); }}>Reset all</button>
           <button onClick={() => setOpen(false)}>Close</button>
+        </div>
+      </div>
+      <div className="config-panel__size">
+        <div>
+          Grid Size: &nbsp;
+          <input
+            key="columns"
+            type="number"
+            className="config-panel__input"
+            min={1}
+            max={16}
+            value={gridColumns}
+            title="Grid columns"
+            onChange={(e) => {
+              setGridColumns(Number(e.target.value));
+            }}
+          />
+          &nbsp; columns &times; &nbsp;
+          <input
+            key="rows"
+            type="number"
+            className="config-panel__input"
+            min={1}
+            max={16}
+            value={gridRows}
+            title="Grid rows"
+            onChange={(e) => {
+              setGridRows(Number(e.target.value));
+            }}
+          />
+          &nbsp; rows
         </div>
       </div>
       <div
         className="config-panel__grid"
-        style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}
+        style={{ gridTemplateColumns: `repeat(${gridColumns}, 1fr)` }}
       >
         {rows.flatMap((row) =>
           row.cells.map((cell) => (
