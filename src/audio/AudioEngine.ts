@@ -40,6 +40,20 @@ export class AudioEngine {
     this.synth.triggerAttackRelease(freq, duration, time, vel);
   }
 
+  /** Begin sustaining a note indefinitely (for interactive hold). */
+  attack(midi: number, velocity: number, time?: number): void {
+    if (!this.synth) return;
+    const freq = Tone.Frequency(midi, "midi").toFrequency();
+    this.synth.triggerAttack(freq, time, velocity / 127);
+  }
+
+  /** Release a held note. */
+  release(midi: number, time?: number): void {
+    if (!this.synth) return;
+    const freq = Tone.Frequency(midi, "midi").toFrequency();
+    this.synth.triggerRelease(freq, time);
+  }
+
   /** Immediately release all notes */
   releaseAll(): void {
     this.synth?.releaseAll();

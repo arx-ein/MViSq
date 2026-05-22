@@ -41,9 +41,16 @@ function App() {
     [scheduler]
   );
 
-  const onCellClick = useCallback(
+  const onNoteOn = useCallback(
     (midi: number) => {
-      scheduler?.playNote(midi);
+      scheduler?.noteAttack(midi);
+    },
+    [scheduler]
+  );
+
+  const onNoteOff = useCallback(
+    (midi: number) => {
+      scheduler?.noteRelease(midi);
     },
     [scheduler]
   );
@@ -63,7 +70,7 @@ function App() {
         )}
       </p>
       <TransportControls enabled={midiInfo !== null && scheduler !== null} scheduler={scheduler} />
-      <Grid onCellClick={onCellClick} />
+      <Grid onNoteOn={onNoteOn} onNoteOff={onNoteOff} />
       <hr />
       <GridConfigPanel />
       <footer>

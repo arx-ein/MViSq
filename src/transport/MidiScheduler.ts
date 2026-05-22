@@ -89,10 +89,15 @@ export class MidiScheduler {
     useTransportStore.getState().setPosition(time);
   }
 
-  /** Play a single note (for grid cell click preview) */
-  async playNote(midi: number): Promise<void> {
+  /** Begin holding a note (on pointer down). */
+  async noteAttack(midi: number): Promise<void> {
     await this.ensureAudioStarted();
-    this.audioEngine.noteOn(midi, 100, 0.3);
+    this.audioEngine.attack(midi, 100);
+  }
+
+  /** Release a held note (on pointer up / leave). */
+  noteRelease(midi: number): void {
+    this.audioEngine.release(midi);
   }
 
   private startPositionPolling(): void {

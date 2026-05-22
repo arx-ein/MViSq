@@ -5,10 +5,11 @@ import "./GridCell.css";
 
 interface GridCellProps {
   midi: number;
-  onClick?: (midi: number) => void;
+  onNoteOn?: (midi: number) => void;
+  onNoteOff?: (midi: number) => void;
 }
 
-function GridCellInner({ midi, onClick }: GridCellProps) {
+function GridCellInner({ midi, onNoteOn, onNoteOff }: GridCellProps) {
   const velocity = useActiveNotesStore(
     (s) => s.activeNotes.get(midi) ?? 0
   );
@@ -27,7 +28,10 @@ function GridCellInner({ midi, onClick }: GridCellProps) {
             }
           : undefined
       }
-      onClick={() => onClick?.(midi)}
+      onPointerDown={() => onNoteOn?.(midi)}
+      onPointerUp={() => onNoteOff?.(midi)}
+      onPointerEnter={(e) => { if (e.buttons === 1) onNoteOn?.(midi); }}
+      onPointerLeave={(e) => { if (e.buttons === 1) onNoteOff?.(midi); }}
       title={`${midiToName(midi)} (${midi})`}
     >
       <span className="grid-cell__label">{midiToName(midi)}</span>
