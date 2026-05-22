@@ -93,11 +93,13 @@ export class MidiScheduler {
   async noteAttack(midi: number): Promise<void> {
     await this.ensureAudioStarted();
     this.audioEngine.attack(midi, 100);
+    useActiveNotesStore.getState().setNoteOn(midi, 100);
   }
 
   /** Release a held note (on pointer up / leave). */
   noteRelease(midi: number): void {
     this.audioEngine.release(midi);
+    useActiveNotesStore.getState().setNoteOff(midi);
   }
 
   private startPositionPolling(): void {
