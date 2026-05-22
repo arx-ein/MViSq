@@ -42,7 +42,7 @@ export default function GridConfigPanel() {
       <div className="config-panel__header">
         <h2>Grid Note Mapping</h2>
         <div className="config-panel__actions">
-          <button onClick={() => { resetMapping(); resetSize(); }}>Reset all</button>
+          <button onClick={() => { resetSize(); resetMapping(); }}>Reset all</button>
         </div>
       </div>
       <div className="config-panel__size">
