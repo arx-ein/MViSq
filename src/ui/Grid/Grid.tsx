@@ -3,10 +3,11 @@ import GridCell from "./GridCell";
 import "./Grid.css";
 
 interface GridProps {
-  onCellClick?: (midi: number) => void;
+  onNoteOn?: (midi: number) => void;
+  onNoteOff?: (midi: number) => void;
 }
 
-export default function Grid({ onCellClick }: GridProps) {
+export default function Grid({ onNoteOn, onNoteOff }: GridProps) {
   const gridRows = useGridConfigStore((s) => s.gridRows);
   const gridColumns = useGridConfigStore((s) => s.gridColumns);
   const noteMapping = useGridConfigStore((s) => s.noteMapping);
@@ -28,7 +29,7 @@ export default function Grid({ onCellClick }: GridProps) {
       }}
     >
       {rows.flat().map((midi, i) => (
-        <GridCell key={i} midi={midi} onClick={onCellClick} />
+        <GridCell key={i} midi={midi} onNoteOn={onNoteOn} onNoteOff={onNoteOff} />
       ))}
     </div>
   );
