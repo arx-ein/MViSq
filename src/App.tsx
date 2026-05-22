@@ -4,6 +4,7 @@ import Grid from "./ui/Grid/Grid";
 import TransportControls from "./ui/TransportControls/TransportControls";
 import GridConfigPanel from "./ui/GridConfigPanel/GridConfigPanel";
 import { MidiScheduler } from "./transport/MidiScheduler";
+import { MidiInputHandler } from "./input/MidiInputHandler";
 import type { ParsedMidi } from "./types/midi";
 
 interface MidiInfo {
@@ -27,6 +28,16 @@ function App() {
       setScheduler(null);
     };
   }, []);
+
+  useEffect(() => {
+    if (!scheduler) return;
+    const handler = new MidiInputHandler(
+      (midi, velocity) => scheduler.noteAttack(midi, velocity),
+      (midi) => scheduler.noteRelease(midi),
+    );
+    handler.enable().catch(console.warn);
+    return () => handler.dispose();
+  }, [scheduler]);
 
   const onMidiLoaded = useCallback(
     (parsed: ParsedMidi, name: string) => {

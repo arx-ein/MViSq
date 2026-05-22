@@ -89,11 +89,11 @@ export class MidiScheduler {
     useTransportStore.getState().setPosition(time);
   }
 
-  /** Begin holding a note (on pointer down). */
-  async noteAttack(midi: number): Promise<void> {
+  /** Begin holding a note (on pointer down or MIDI input). */
+  async noteAttack(midi: number, velocity = 100): Promise<void> {
+    useActiveNotesStore.getState().setNoteOn(midi, velocity);
     await this.ensureAudioStarted();
-    this.audioEngine.attack(midi, 100);
-    useActiveNotesStore.getState().setNoteOn(midi, 100);
+    this.audioEngine.attack(midi, velocity);
   }
 
   /** Release a held note (on pointer up / leave). */
