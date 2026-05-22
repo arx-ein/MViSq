@@ -93,6 +93,10 @@ export class MidiScheduler {
   async noteAttack(midi: number, velocity = 100): Promise<void> {
     useActiveNotesStore.getState().setNoteOn(midi, velocity);
     await this.ensureAudioStarted();
+    // Safety net: if the AudioContext didn't actually unlock (e.g. called without
+    // a user gesture from a MIDI device), skip attack so notes don't queue and
+    // burst-play when the context eventually unlocks.
+    if (Tone.getContext().state !== "running") return;
     this.audioEngine.attack(midi, velocity);
   }
 
