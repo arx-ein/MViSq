@@ -12,7 +12,7 @@ A web-based MIDI visualizer that displays playback on a Launchpad-style grid. Lo
 - **Transport controls**: play, pause, stop, and seek through the MIDI file
   - ToDo: keep note on when paused inside note duration
 - **Click-to-preview**: click any grid cell to hear its assigned note
-  - ToDo: use pointerdown / pointerup instead of click event
+  - MIDI device input is also available for playing and displaying notes
 
 ## Getting Started
 
